@@ -3,6 +3,7 @@ node_js:
   - "node"
 before_install:
   - npm i -g npm
+  - npm i @angular/cli -g
 cache: npm
 install: true
 script:
