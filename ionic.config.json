@@ -1,5 +1,7 @@
 {
   "name": "InvoiceScannerApp",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
