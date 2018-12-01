@@ -14,7 +14,8 @@ const routes: Routes = [
   {
     path: 'invoices',
     loadChildren: './invoices/invoices.module#InvoicesPageModule'
-  }
+  },
+  { path: 'invoice/:id', loadChildren: './invoice/invoice.module#InvoicePageModule' }
 ];
 
 @NgModule({

@@ -1,0 +1,9 @@
+<app-header [title]="invoice && invoice.title"></app-header>
+
+<ion-content padding *ngIf="invoice">
+  <app-detail-row [label]="'Title'" [value]="invoice.title"></app-detail-row>
+  <app-detail-row [label]="'Added at'" [value]="invoice.addedAt | date"></app-detail-row>
+  <app-detail-row [label]="'Description'" [value]="invoice.description"></app-detail-row>
+  <app-detail-row [label]="'Guaranty until'" [value]="invoice.guarantyUntil | date"></app-detail-row>
+  <app-detail-row [label]="'Guaranty years'" [value]="invoice.guarantyYears"></app-detail-row>
+</ion-content>

@@ -6,7 +6,7 @@
   </ion-refresher>
 
   <ion-list>
-    <ion-item *ngFor="let invoice of invoices">
+    <ion-item *ngFor="let invoice of invoices" [routerLink]="['/invoice', invoice.id]">
       <ion-label>
         <h2>{{invoice.title}}</h2>
       </ion-label>
