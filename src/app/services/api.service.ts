@@ -17,7 +17,7 @@ export class ApiService {
   }
 
   public getInvoices(lastId: number = 0): Observable<Invoice[]> {
-    // return this.httpClient.get(`${this.endpoint}${paths.invoice}`);
+    // return this.httpClient.get<Invoice[]>(`${this.endpoint}${paths.invoice}`);
     return Observable.create(observer => {
       const invoices: Invoice[] = [];
 
@@ -34,6 +34,24 @@ export class ApiService {
       }
       setTimeout(() => {
         observer.next(invoices);
+      }, 3000);
+    });
+  }
+
+  public getInvoice(id: number): Observable<Invoice> {
+    // return this.httpClient.get<Invoice>(`${this.endpoint}${paths.invoice}/${id}`);
+
+    return Observable.create(observer => {
+      setTimeout(() => {
+        observer.next({
+          id,
+          title: 'teasd',
+          addedAt: moment().unix(),
+          description: '12313',
+          guarantyUntil: moment().unix(),
+          guarantyYears: 12,
+          hasGuaranty: false
+        });
       }, 3000);
     });
   }

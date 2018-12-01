@@ -1,51 +1,64 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '../services/api.service';
 import {Invoice} from '../typing/Invoice';
 import {isEmpty} from 'lodash';
+import {Observable, Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-invoices',
   templateUrl: './invoices.page.html',
   styleUrls: ['./invoices.page.scss']
 })
-export class InvoicesPage implements OnInit {
+export class InvoicesPage implements OnInit, OnDestroy {
   public invoices: Invoice[] = [];
+  private unsubscribe$ = new Subject<void>();
 
-  constructor(
+  public constructor(
     private readonly apiService: ApiService,
   ) {
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.init();
   }
 
-  doInfiniteScroll(infiniteScroll): void {
+  public ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  public doInfiniteScroll(infiniteScroll): void {
     if (isEmpty(this.invoices)) {
       infiniteScroll.target.complete();
       return;
     }
     const lastId = this.invoices[this.invoices.length - 1].id;
-    this.apiService
-      .getInvoices(lastId)
+    this.getInvoices(lastId)
       .subscribe(invoices => {
         this.invoices.push(...invoices);
         infiniteScroll.target.complete();
       });
   }
 
-  doRefresh(refresher): void {
+  public doRefresh(refresher): void {
     this.init(refresher.target.complete);
   }
 
   private init(cb?: Function): void {
-    this.apiService
-      .getInvoices()
+    this.getInvoices()
       .subscribe(invoices => {
         this.invoices = invoices;
         if (cb) {
           cb();
         }
       });
+  }
+
+  private getInvoices(lastId?: number): Observable<Invoice[]> {
+    return this.apiService.getInvoices(lastId)
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      );
   }
 }
